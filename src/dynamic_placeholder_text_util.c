@@ -55,7 +55,7 @@ const u8 *DynamicPlaceholderTextUtil_GetPlaceholderPtr(u8 idx)
     return sStringPointers[idx];
 }
 
-static void FormatTextByWidth(u8 *result, s32 maxWidth, u8 fontId, const u8 *str, s16 letterSpacing)
+void FormatTextByWidth(u8 *result, s32 maxWidth, u8 fontId, const u8 *str, s16 letterSpacing)
 {
     u8 *end, *ptr, *curLine, *lastSpace;
 

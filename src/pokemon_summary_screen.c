@@ -631,16 +631,16 @@ static const struct WindowTemplate sPageInfoTemplate[] =
         .width = 18,
         .height = 4,
         .paletteNum = 6,
-        .baseBlock = 504,
+        .baseBlock = 503,
         #endif
     },
     [PSS_DATA_WINDOW_INFO_MEMO] = {
         .bg = 0,
         #if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION)
         .tilemapLeft = 11,
-        .tilemapTop = 14,
-        .width = 18,
-        .height = 6,
+        .tilemapTop = 16,
+        .width = 20,
+        .height = 4,
         .paletteNum = 6,
         .baseBlock = 665,
         #else
@@ -3539,10 +3539,22 @@ static void PrintMonAbilityName(void)
     u8 windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ABILITY);
     u16 ability = GetAbilityBySpecies(sMonSummaryScreen->summary.species, sMonSummaryScreen->summary.abilityNum);
     u16 isHiddenAbility = gSpeciesInfo[sMonSummaryScreen->summary.species].abilities[2];
-    if(SUMMARY_SCREEN_ABILITY_COLOR && isHiddenAbility)
-        PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 2);
+    if(SUMMARY_SCREEN_ABILITY_COLOR && !SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION)
+    {
+        if(!SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION && isHiddenAbility)
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 2);
+        else
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 1);
+    }
+    else if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION)
+    {
+        if(SUMMARY_SCREEN_ABILITY_COLOR && isHiddenAbility)
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 2);
+        else
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 1);
+    }
     else 
-        PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 1);
+        PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 1);
 }
 
 static void PrintMonAbilityDescription(void)
@@ -3558,9 +3570,18 @@ static void PrintMonAbilityDescription(void)
     }
     else
     {
-        PrintTextOnWindow(windowId, gAbilitiesInfo[ability].description, 0, 17, 0, 0)
+        PrintTextOnWindow(windowId, gAbilitiesInfo[ability].description, 0, 16, 0, 0);
     }
 }
+
+static const u8 gText_XNatureMetAtYZAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature, met at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1},\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}.");
+static const u8 gText_XNatureHatchedAtYZAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature, hatched at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1},\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}.");
+static const u8 gText_XNatureObtainedInTradeAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature, obtained in a trade.");
+static const u8 gText_XNatureFatefulEncounterAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature, obtained in a fateful\nencounter at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1}.");
+static const u8 gText_XNatureProbablyMetAtAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature, probably met at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1},\n{DYNAMIC 0}{DYNAMIC 4}{DYNAMIC 1}.");
+static const u8 gText_XNatureAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature");
+static const u8 gText_XNatureMetSomewhereAtAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature, met somewhere at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1}.");
+static const u8 gText_XNatureHatchedSomewhereAtAbilityExpanded[] = _("{DYNAMIC 0}{DYNAMIC 2}{DYNAMIC 1}{DYNAMIC 5} nature, hatched somewhere at {LV_2}{DYNAMIC 0}{DYNAMIC 3}{DYNAMIC 1}.");
 
 static void BufferMonTrainerMemo(void)
 {
@@ -3590,22 +3611,42 @@ static void BufferMonTrainerMemo(void)
 
         if (DoesMonOTMatchOwner() == TRUE)
         {
-            if (sum->metLevel == 0)
-                text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureHatchedSomewhereAt : gText_XNatureHatchedAtYZ;
+
+            if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION == TRUE)
+            {
+                if (sum->metLevel == 0)
+                    text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureHatchedSomewhereAtAbilityExpanded : gText_XNatureHatchedAtYZAbilityExpanded;
+                else
+                    text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureMetSomewhereAtAbilityExpanded : gText_XNatureMetAtYZAbilityExpanded;
+            }
             else
-                text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureMetSomewhereAt : gText_XNatureMetAtYZ;
+            {
+                if (sum->metLevel == 0)
+                    text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureHatchedSomewhereAt : gText_XNatureHatchedAtYZ;
+                else
+                    text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureMetSomewhereAt : gText_XNatureMetAtYZ;
+            }
         }
         else if (sum->metLocation == METLOC_FATEFUL_ENCOUNTER)
         {
-            text = gText_XNatureFatefulEncounter;
+            if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION == TRUE)
+                text = gText_XNatureFatefulEncounterAbilityExpanded;
+            else
+                text = gText_XNatureFatefulEncounter;
         }
         else if (sum->metLocation != METLOC_IN_GAME_TRADE && DidMonComeFromGBAGames())
         {
-            text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureObtainedInTrade : gText_XNatureProbablyMetAt;
+            if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION == TRUE)
+                text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureObtainedInTradeAbilityExpanded : gText_XNatureProbablyMetAtAbilityExpanded;
+            else
+                text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureObtainedInTrade : gText_XNatureProbablyMetAt;
         }
         else
         {
-            text = gText_XNatureObtainedInTrade;
+            if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION == TRUE)
+                text = gText_XNatureObtainedInTradeAbilityExpanded;
+            else
+                text = gText_XNatureObtainedInTrade;
         }
 
         DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, text);
