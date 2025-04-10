@@ -29,4 +29,14 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 // Flags
 #define P_FLAG_SUMMARY_SCREEN_IV_EV_INFO 0      // If this flag is set, will allow player to cycle through the Stats, IVs, and EVs in the summary screen skills page. Note: if P_SUMMARY_SCREEN_IV_EV_INFO is TRUE, this flag does nothing.
 
+//Summary Screen Expanded Branch
+//This should only be used if SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION is TRUE
+#define MAX_ABILITY_DESCRIPTION_LENGTH 96 //The maximum length of the ability description string, This is used to allocate memory for the string in the summary screen.
+#define MAX_MOVE_DESCRIPTION_LENGTH    96 //The maximum length of the move description string, This is used to allocate memory for the string in the summary screen.
+
+#define SUMMARY_SCREEN_MON_SHADOWS FALSE //If TRUE, the mon sprite will have a shadow loaded behind it.
+#define SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION FALSE //If TRUE, the ability description will be expanded to show the full description of the ability instead of just one line.
+#define SUMMARY_SCREEN_ABILITY_COLOR FALSE //If TRUE, the ability description will be have to its color changes if its a Hidden Ability.
+#define SUMMARY_SCREEN_BACKGROUND_COLOR FALSE //If TRUE, the background color of the summary screen will be changed when the mon is shiny.
+
 #endif // GUARD_CONFIG_SUMMARY_SCREEN_H
