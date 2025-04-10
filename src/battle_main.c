@@ -4723,9 +4723,7 @@ void SwapTurnOrder(u8 id1, u8 id2)
 // For AI, so it doesn't 'cheat' by knowing player's ability
 u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 {
-    int i;
     u32 speed = gBattleMons[battler].speed;
-    u32 move;
 
     // weather abilities
     if (HasWeatherEffect())
