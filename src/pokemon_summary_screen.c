@@ -3057,7 +3057,7 @@ static void SetMonPicBackgroundPalette(bool8 isMonShiny)
         if(P_SUMMARY_SCREEN_BACKGROUND_COLOR == TRUE)
             SetBgTilemapPalette(3, 0, 2, 32, 20, 2);
         else
-            SetBgTilemapPalette(3, 1, 4, 8, 8, 2);
+            SetBgTilemapPalette(3, 1, 4, 8, 8, 0);
     }
     ScheduleBgCopyTilemapToVram(3);
 }
