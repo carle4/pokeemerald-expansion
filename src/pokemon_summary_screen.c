@@ -722,6 +722,15 @@ static const struct WindowTemplate sPageMovesTemplate[] = // This is used for bo
         .baseBlock = 557,
     },
     [PSS_DATA_WINDOW_MOVE_DESCRIPTION] = {
+        #if SUMMARY_SCREEN_EXPAND_MOVE_DESCRIPTION
+        .bg = 0,
+        .tilemapLeft = 10,
+        .tilemapTop = 14,
+        .width = 20,
+        .height = 6,
+        .paletteNum = 6,
+        .baseBlock = 617,
+        #else
         .bg = 0,
         .tilemapLeft = 10,
         .tilemapTop = 15,
@@ -729,6 +738,7 @@ static const struct WindowTemplate sPageMovesTemplate[] = // This is used for bo
         .height = 4,
         .paletteNum = 6,
         .baseBlock = 617,
+        #endif
     },
 };
 static const u8 sTextColors[][3] =
@@ -1398,7 +1408,7 @@ static bool8 LoadGraphics(void)
         break;
     case 19:
         CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
-        if(sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS)
+        if(SUMMARY_SCREEN_ITEM_ICON && sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS)
             DestroyItemIconSprite(&sMonSummaryScreen->currentMon);
         gMain.state++;
         break;
@@ -2031,7 +2041,7 @@ static void Task_ChangeSummaryMon(u8 taskId)
         break;
     case 6:
         CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
-        if (sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS)
+        if (SUMMARY_SCREEN_ITEM_ICON && sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS)
             DestroyItemIconSprite(&sMonSummaryScreen->currentMon);
         break;
     case 7:
@@ -3043,10 +3053,12 @@ static void SetMonPicBackgroundPalette(bool8 isMonShiny)
             SetBgTilemapPalette(3, 1, 4, 8, 8, 0);
     }
     else
+    {
         if(SUMMARY_SCREEN_BACKGROUND_COLOR == TRUE)
-            SetBgTilemapPalette(3, 0, 2, 32, 20, 0);
+            SetBgTilemapPalette(3, 0, 2, 32, 20, 2);
         else
-            SetBgTilemapPalette(3, 1, 4, 8, 8, 5);
+            SetBgTilemapPalette(3, 1, 4, 8, 8, 2);
+    }
     ScheduleBgCopyTilemapToVram(3);
 }
 
@@ -3538,15 +3550,8 @@ static void PrintMonAbilityName(void)
 {
     u8 windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ABILITY);
     u16 ability = GetAbilityBySpecies(sMonSummaryScreen->summary.species, sMonSummaryScreen->summary.abilityNum);
-    u16 isHiddenAbility = gSpeciesInfo[sMonSummaryScreen->summary.species].abilities[2];
-    if(SUMMARY_SCREEN_ABILITY_COLOR && !SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION)
-    {
-        if(!SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION && isHiddenAbility)
-            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 2);
-        else
-            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 1);
-    }
-    else if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION)
+    u16 isHiddenAbility = sMonSummaryScreen->summary.abilityNum == 2;
+    if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION)
     {
         if(SUMMARY_SCREEN_ABILITY_COLOR && isHiddenAbility)
             PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 2);
@@ -3554,7 +3559,12 @@ static void PrintMonAbilityName(void)
             PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 1);
     }
     else 
-        PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 1);
+    {
+        if(SUMMARY_SCREEN_ABILITY_COLOR && isHiddenAbility)
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 2);
+        else
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 1);
+    }
 }
 
 static void PrintMonAbilityDescription(void)
@@ -3791,7 +3801,7 @@ static void PrintEggMemo(void)
 static void PrintSkillsPageText(void)
 {
     PrintHeldItemName();
-    //PrintRibbonCount();
+    PrintRibbonCount();
     if(ShouldShowIvEvPrompt())
         ShowUtilityPrompt(SUMMARY_SKILLS_MODE_STATS);
     BufferLeftColumnStats();
@@ -3811,7 +3821,7 @@ static void Task_PrintSkillsPage(u8 taskId)
         PrintHeldItemName();
         break;
     case 2:
-        //PrintRibbonCount();
+        PrintRibbonCount();
         break;
     case 3:
         ChangeStatLabel(SUMMARY_SKILLS_MODE_STATS);
@@ -3844,7 +3854,8 @@ static void PrintHeldItemName(void)
     u32 fontId;
     int x;
 
-    CreateItemIconSprite(&sMonSummaryScreen->currentMon);
+    if(SUMMARY_SCREEN_ITEM_ICON)
+        CreateItemIconSprite(&sMonSummaryScreen->currentMon);
 
     if (sMonSummaryScreen->summary.item == ITEM_ENIGMA_BERRY_E_READER
         && IsMultiBattle() == TRUE
@@ -3863,7 +3874,7 @@ static void PrintHeldItemName(void)
     }
 
     fontId = GetFontIdToFit(text, FONT_NORMAL, 0, WindowTemplateWidthPx(&sPageSkillsTemplate[PSS_DATA_WINDOW_SKILLS_HELD_ITEM]) - 8);
-    x = GetStringCenterAlignXOffset(fontId, text, 72) + 2;
+    x = GetStringCenterAlignXOffset(fontId, text, 72) + 3;
     PrintTextOnWindowWithFont(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_HELD_ITEM), text, x, 1, 0, 0, fontId);
 }
 
@@ -3883,7 +3894,7 @@ static void PrintRibbonCount(void)
         text = gStringVar4;
     }
 
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, text, 70) + 6;
+    x = GetStringCenterAlignXOffset(FONT_NORMAL, text, 70) + 8;
     PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_RIBBON_COUNT), text, x, 1, 0, 0);
 }
 
@@ -4249,7 +4260,16 @@ static void PrintMoveDetails(u16 move)
             if (B_SHOW_CATEGORY_ICON == TRUE)
                 ShowCategoryIcon(GetBattleMoveCategory(move));
             PrintMovePowerAndAccuracy(move);
-            PrintTextOnWindow(windowId, GetMoveDescription(move), 6, 1, 0, 0);
+            if(SUMMARY_SCREEN_EXPAND_MOVE_DESCRIPTION)
+            {
+                u8 desc[MAX_MOVE_DESCRIPTION_LENGTH];
+                FormatTextByWidth(desc, 159, FONT_SMALL_NARROW, GetMoveDescription(move), 0);
+                PrintTextOnWindow_SmallNarrow(windowId, desc, 5, 6, 2, 0);
+            }
+            else
+            {
+                PrintTextOnWindow(windowId, GetMoveDescription(move), 6, 1, 0, 0);
+            }
         }
         else
         {
