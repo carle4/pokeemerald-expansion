@@ -4244,7 +4244,16 @@ static void PrintContestMoveDescription(u8 moveSlot)
     if (move != MOVE_NONE)
     {
         u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_DESCRIPTION);
-        PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[GetMoveContestEffect(move)], 6, 1, 0, 0);
+        if(P_SUMMARY_SCREEN_EXPAND_MOVE_DESCRIPTION)
+        {
+            u8 desc[MAX_MOVE_DESCRIPTION_LENGTH];
+            FormatTextByWidth(desc, MAX_MOVE_DESCRIPTION_WIDTH, FONT_SMALL_NARROW, gContestEffectDescriptionPointers[GetMoveContestEffect(move)], 0);
+            PrintTextOnWindow_SmallNarrow(windowId, desc, 5, 6, 2, 0);
+        }
+        else
+        {
+            PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[GetMoveContestEffect(move)], 6, 1, 0, 0);
+        }
     }
 }
 
@@ -4273,7 +4282,16 @@ static void PrintMoveDetails(u16 move)
         }
         else
         {
-            PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[GetMoveContestEffect(move)], 6, 1, 0, 0);
+            if(P_SUMMARY_SCREEN_EXPAND_MOVE_DESCRIPTION)
+            {
+                u8 desc[MAX_MOVE_DESCRIPTION_LENGTH];
+                FormatTextByWidth(desc, MAX_MOVE_DESCRIPTION_WIDTH, FONT_SMALL_NARROW, GetMoveDescription(move), 0);
+                PrintTextOnWindow_SmallNarrow(windowId, desc, 5, 6, 2, 0);
+            }
+            else
+            {
+                PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[GetMoveContestEffect(move)], 6, 1, 0, 0);
+            }
         }
         PutWindowTilemap(windowId);
     }
