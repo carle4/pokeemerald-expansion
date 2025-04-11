@@ -496,28 +496,28 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         [ABILITY_OVERGROW] =
         {
             .name = _("Overgrow"),
-            .description = COMPOUND_STRING("Increases Grass moves by 50% when the user's HP is above 1/3 HP."),
+            .description = COMPOUND_STRING("Increases Grass moves by 50% when the user's HP is under 1/3 HP."),
             .aiRating = 5,
         },
 
         [ABILITY_BLAZE] =
         {
             .name = _("Blaze"),
-            .description = COMPOUND_STRING("Increases Fire moves by 50% when the user's HP is above 1/3 HP."),
+            .description = COMPOUND_STRING("Increases Fire moves by 50% when the user's HP is under 1/3 HP."),
             .aiRating = 5,
         },
 
         [ABILITY_TORRENT] =
         {
             .name = _("Torrent"),
-            .description = COMPOUND_STRING("Increases Water moves by 50% when the user's HP is above 1/3 HP."),
+            .description = COMPOUND_STRING("Increases Water moves by 50% when the user's HP is under 1/3 HP."),
             .aiRating = 5,
         },
 
         [ABILITY_SWARM] =
         {
             .name = _("Swarm"),
-            .description = COMPOUND_STRING("Increases Bug moves by 50% when the user's HP is above 1/3 HP."),
+            .description = COMPOUND_STRING("Increases Bug moves by 50% when the user's HP is under 1/3 HP."),
             .aiRating = 5,
         },
 
