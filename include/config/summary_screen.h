@@ -34,7 +34,7 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 
 //Ability Settings Settings
 #define P_SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION FALSE //If TRUE, the ability description will be expanded to show the full description of the ability instead of just one line.
-#define P_SUMMARY_SCREEN_EXPAND_MOVE_DESCRIPTION TRUE //If TRUE, the ability description will be expanded to show the full description of the move instead of just one line.
+#define P_SUMMARY_SCREEN_EXPAND_MOVE_DESCRIPTION FALSE //If TRUE, the ability description will be expanded to show the full description of the move instead of just one line.
 
 //This should only be used if P_SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION is TRUE
 //Don't change these values unless you know what you're doing.
