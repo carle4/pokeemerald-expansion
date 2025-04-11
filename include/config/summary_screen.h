@@ -51,15 +51,20 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 #define MAX_MOVE_DESCRIPTION_LENGTH    96 //The maximum length of the move description string.
 #define MAX_MOVE_DESCRIPTION_WIDTH     159 //The maximum length of the move description string.
 //Color Settings
-#define P_SUMMARY_SCREEN_ABILITY_COLOR FALSE //If TRUE, the ability description will be have to its color changes if its a Hidden Ability.
+#define P_SUMMARY_SCREEN_ABILITY_COLOR    FALSE //If TRUE, the ability description will be have to its color changes if its a Hidden Ability.
 #define P_SUMMARY_SCREEN_BACKGROUND_COLOR FALSE //If TRUE, the background color of the summary screen will be changed when the mon is shiny.
-#define ABILITY_COLOR_VALUE 2 //The color of the ability name. Defaults to Red.
-#define BACKGROUND_COLOR_VALUE 2 //The color of the background. Defaults to Gold.
+#define ABILITY_COLOR_VALUE               2 //The color of the ability name. Defaults to Red.
+#define BACKGROUND_COLOR_VALUE            2 //The color of the background. Defaults to Gold.
 
 //Item Settings
-#define P_SUMMARY_SCREEN_ITEM_ICON FALSE //If TRUE, the item icon will be shown in the summary screen, next to the name.
+#define P_SUMMARY_SCREEN_ITEM_ICON         FALSE //If TRUE, the item icon will be shown in the summary screen, next to the name.
 
 //Page Settings
-#define P_SUMMARY_SCREEN_SHOW_CONTEST_MOVES TRUE //If FALSE, the contest moves page will be hidden in the summary screen.
+#define P_SUMMARY_SCREEN_SHOW_CONTEST_MOVES  TRUE //If FALSE, the contest moves page will be hidden in the summary screen.
+
+//Mon Settings
+#define P_SUMMARY_SCREEN_MON_IDLE_ANIMS         FALSE //If TRUE, the mons animations regularly as an "idle" anim.
+#define P_SUMMARY_SCREEN_MON_IDLE_ANIMS_FRAMES  600 // number of frames between each idle anim IF P_SUMMARY_SCREEN_MON_IDLE_ANIMS is true.
+                                                    // for reference, Emerald runs at 60FPS by default, 600 is the default number.
 
 #endif // GUARD_CONFIG_SUMMARY_SCREEN_H
