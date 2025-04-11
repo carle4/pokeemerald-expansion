@@ -1,6 +1,6 @@
 const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
 {
-    #if SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION
+    #if P_SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION
         [ABILITY_NONE] =
         {
             .name = _("-------"),
