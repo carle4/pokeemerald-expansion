@@ -3575,7 +3575,7 @@ static void PrintMonAbilityDescription(void)
     if(SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION == TRUE)
     {
         u8 desc[MAX_ABILITY_DESCRIPTION_LENGTH];
-        FormatTextByWidth(desc, 149, FONT_SHORT_NARROW, gAbilitiesInfo[ability].description, 0);
+        FormatTextByWidth(desc, MAX_ABILITY_DESCRIPTION_WIDTH, FONT_SHORT_NARROW, gAbilitiesInfo[ability].description, 0);
         PrintTextOnWindow_SmallNarrow(windowId, desc, 5, 22, 2, 0);
     }
     else
@@ -4263,7 +4263,7 @@ static void PrintMoveDetails(u16 move)
             if(SUMMARY_SCREEN_EXPAND_MOVE_DESCRIPTION)
             {
                 u8 desc[MAX_MOVE_DESCRIPTION_LENGTH];
-                FormatTextByWidth(desc, 159, FONT_SMALL_NARROW, GetMoveDescription(move), 0);
+                FormatTextByWidth(desc, MAX_MOVE_DESCRIPTION_WIDTH, FONT_SMALL_NARROW, GetMoveDescription(move), 0);
                 PrintTextOnWindow_SmallNarrow(windowId, desc, 5, 6, 2, 0);
             }
             else
