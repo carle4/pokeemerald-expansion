@@ -31,6 +31,8 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 
 //Shadow Settings
 #define P_SUMMARY_SCREEN_MON_SHADOWS FALSE //If TRUE, the mon sprite will have a shadow loaded behind it.
+#define MON_SHADOWS_X 3 //The X position of the shadow sprite.
+#define MON_SHADOWS_Y 2 //The Y position of the shadow sprite.
 
 //Ability Settings Settings
 #define P_SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION FALSE //If TRUE, the ability description will be expanded to show the full description of the ability instead of just one line.
@@ -51,6 +53,8 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 //Color Settings
 #define P_SUMMARY_SCREEN_ABILITY_COLOR FALSE //If TRUE, the ability description will be have to its color changes if its a Hidden Ability.
 #define P_SUMMARY_SCREEN_BACKGROUND_COLOR FALSE //If TRUE, the background color of the summary screen will be changed when the mon is shiny.
+#define ABILITY_COLOR_VALUE 2 //The color of the ability name. Defaults to Red.
+#define BACKGROUND_COLOR_VALUE 2 //The color of the background. Defaults to Gold.
 
 //Item Settings
 #define P_SUMMARY_SCREEN_ITEM_ICON FALSE //If TRUE, the item icon will be shown in the summary screen, next to the name.

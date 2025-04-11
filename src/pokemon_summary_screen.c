@@ -3057,7 +3057,7 @@ static void SetMonPicBackgroundPalette(bool8 isMonShiny)
     else
     {
         if(P_SUMMARY_SCREEN_BACKGROUND_COLOR == TRUE)
-            SetBgTilemapPalette(3, 0, 2, 32, 20, 2);
+            SetBgTilemapPalette(3, 0, 2, 32, 20, BACKGROUND_COLOR_VALUE);
         else
             SetBgTilemapPalette(3, 1, 4, 8, 8, 0);
     }
@@ -3556,14 +3556,14 @@ static void PrintMonAbilityName(void)
     if(P_SUMMARY_SCREEN_EXPAND_ABILITY_DESCRIPTION)
     {
         if(P_SUMMARY_SCREEN_ABILITY_COLOR && isHiddenAbility)
-            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 2);
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, ABILITY_COLOR_VALUE);
         else
             PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 8, 2, 1);
     }
     else 
     {
         if(P_SUMMARY_SCREEN_ABILITY_COLOR && isHiddenAbility)
-            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 2);
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, ABILITY_COLOR_VALUE);
         else
             PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 1);
     }
@@ -4625,8 +4625,8 @@ static u8 CreateMonSprite(struct Pokemon *unused, bool32 isShadow)
         shadowPalette = LoadSpritePalette(&sSpritePal_MonShadow);
         gSprites[spriteId].oam.paletteNum = shadowPalette;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        gSprites[spriteId].x -= 3;
-        gSprites[spriteId].y -= 2;
+        gSprites[spriteId].x -= MON_SHADOWS_X;
+        gSprites[spriteId].y -= MON_SHADOWS_Y;
         gSprites[spriteId].oam.priority = 1;
     }
 
