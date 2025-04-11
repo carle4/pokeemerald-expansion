@@ -56,6 +56,6 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 #define P_SUMMARY_SCREEN_ITEM_ICON FALSE //If TRUE, the item icon will be shown in the summary screen, next to the name.
 
 //Page Settings
-#define P_SUMMARY_SCREEN_SHOW_CONTEST_MOVES TRUE //If TRUE, the contest moves page will be hidden in the summary screen.
+#define P_SUMMARY_SCREEN_SHOW_CONTEST_MOVES TRUE //If FALSE, the contest moves page will be hidden in the summary screen.
 
 #endif // GUARD_CONFIG_SUMMARY_SCREEN_H
