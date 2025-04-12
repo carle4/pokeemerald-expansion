@@ -1196,11 +1196,19 @@ static const struct SpriteTemplate sSpriteTemplate_StatusCondition =
 };
 static const u16 sMarkings_Pal[] = INCBIN_U16("graphics/summary_screen/markings.gbapal");
 
+static const u16 sMonShadowLightGrayPalette[] = INCBIN_U16("graphics/summary_screen/shadow_lightgray.gbapal");
+static const u16 sMonShadowBlackPalette[] = INCBIN_U16("graphics/summary_screen/shadow_black.gbapal");
 static const u16 sMonShadowPalette[] = INCBIN_U16("graphics/summary_screen/shadow.gbapal");
 
 static const struct SpritePalette sSpritePal_MonShadow =
 {
+    #if MON_SHADOWS_PALLETE == LIGHT_GRAY_PAL
+    sMonShadowLightGrayPalette, TAG_MON_SHADOW
+    #elif MON_SHADOWS_PALLETE == BLACK_PAL
+    sMonShadowBlackPalette, TAG_MON_SHADOW
+    #elif MON_SHADOWS_PALLETE == DEFAULT_PAL
     sMonShadowPalette, TAG_MON_SHADOW
+    #endif
 };
 
 

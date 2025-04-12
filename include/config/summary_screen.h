@@ -29,9 +29,16 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 
 //Summary Screen Expanded Branch
 
+
+//These defines are for the MON_SHADOWS_PALLETE config.
+#define LIGHT_GRAY_PAL 0 
+#define BLACK_PAL 1
+#define DEFAULT_PAL 2
+
 //Shadow Settings
 #define P_SUMMARY_SCREEN_MON_SHADOWS FALSE //If TRUE, the mon sprite will have a shadow loaded behind it.
-#define MON_SHADOWS_X 3 //The X position of the shadow sprite.
+#define MON_SHADOWS_PALLETE DEFAULT_PAL //If TRUE, the mons animations regularly as an "idle" anim.
+#define MON_SHADOWS_X 4 //The X position of the shadow sprite.
 #define MON_SHADOWS_Y 2 //The Y position of the shadow sprite.
 
 //Ability Settings Settings
