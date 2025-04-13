@@ -629,7 +629,7 @@ static const struct WindowTemplate sPageInfoTemplate[] =
         .paletteNum = 6,
         .baseBlock = 504,
         #else
-        .tilemapLeft = 11,
+        .tilemapLeft = 10,
         .tilemapTop = 9,
         .width = 18,
         .height = 4,
@@ -3617,9 +3617,9 @@ static void PrintMonAbilityName(void)
     else 
     {
         if(P_SUMMARY_SCREEN_ABILITY_COLOR && isHiddenAbility)
-            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, ABILITY_COLOR_VALUE);
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 1, 0, ABILITY_COLOR_VALUE);
         else
-            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 0, 1, 0, 1);
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].name, 5, 1, 0, 1);
     }
 }
 
@@ -3636,7 +3636,10 @@ static void PrintMonAbilityDescription(void)
     }
     else
     {
-        PrintTextOnWindow(windowId, gAbilitiesInfo[ability].description, 0, 16, 0, 0);
+        if(P_SUMMARY_SCREEN_ABILITY_DESCRIPTION_FONT_CHANGE == TRUE)
+            PrintTextOnWindowToFitPx(windowId, gAbilitiesInfo[ability].description, 5, 16, 0, 0, WindowWidthPx(windowId) - DESCRIPTION_FONT_CHANGE_VALUE);
+        else
+            PrintTextOnWindow(windowId, gAbilitiesInfo[ability].description, 5, 16, 0, 0);
     }
 }
 
