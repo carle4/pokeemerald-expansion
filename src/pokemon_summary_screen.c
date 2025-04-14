@@ -4671,10 +4671,7 @@ static u8 CreateMonSprite(struct Pokemon *unused, bool32 isShadow)
     gSprites[spriteId].callback = SpriteCB_Pokemon;
     gSprites[spriteId].oam.priority = 0;
 
-    if (!IsMonSpriteNotFlipped(summary->species2))
-        gSprites[spriteId].hFlip = TRUE;
-    else
-        gSprites[spriteId].hFlip = FALSE;
+    gSprites[spriteId].hFlip = TRUE;
 
     if (isShadow)
     {
