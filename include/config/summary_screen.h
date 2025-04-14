@@ -74,7 +74,7 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 
 //Mon Settings
 #define P_SUMMARY_SCREEN_MON_IDLE_ANIMS         FALSE //If TRUE, the mons animations regularly as an "idle" anim.
-#define P_SUMMARY_SCREEN_MON_IDLE_ANIMS_FRAMES  600 // number of frames between each idle anim IF P_SUMMARY_SCREEN_MON_IDLE_ANIMS is true.
-                                                    // for reference, Emerald runs at 60FPS by default, 600 is the default number.
+#define P_SUMMARY_SCREEN_MON_IDLE_ANIMS_FRAMES  300 // number of frames between each idle anim IF P_SUMMARY_SCREEN_MON_IDLE_ANIMS is true.
+                                                    // for reference, Emerald runs at 60FPS by default, 300 is the default number.
 
 #endif // GUARD_CONFIG_SUMMARY_SCREEN_H
