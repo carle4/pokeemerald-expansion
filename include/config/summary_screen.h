@@ -37,7 +37,7 @@ Info taken from https://bulbapedia.bulbagarden.net/wiki/Stats_judge.
 
 //Shadow Settings
 #define P_SUMMARY_SCREEN_MON_SHADOWS FALSE //If TRUE, the mon sprite will have a shadow loaded behind it.
-#define MON_SHADOWS_PALLETE DEFAULT_PAL //If TRUE, the mons animations regularly as an "idle" anim.
+#define MON_SHADOWS_PALLETE DEFAULT_PAL //Changes the palette of the shadow sprite.
 #define MON_SHADOWS_X 4 //The X position of the shadow sprite.
 #define MON_SHADOWS_Y 2 //The Y position of the shadow sprite.
 
