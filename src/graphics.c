@@ -1683,7 +1683,7 @@ const u32 gStatusPal_Icons[] = INCBIN_U32("graphics/interface/status_icons.gbapa
 const u16 gCategoryIcons_Pal[] = INCBIN_U16("graphics/interface/category_icons.gbapal");
 const u32 gCategoryIcons_Gfx[] = INCBIN_U32("graphics/interface/category_icons.4bpp.lz");
 
-#if P_BATTLE_SCREEN_NEW_TYPE_ICONS
+#if P_SUMMARY_SCREEN_NEW_TYPE_ICONS
 const u32 gMoveTypes_Gfx_New[] = INCBIN_U32("graphics/types_new/move_types_new.4bpp.lz");
 const u32 gMoveTypes_Pal_New[] = INCBIN_U32("graphics/types_new/move_types_new.gbapal.lz");
 #else
