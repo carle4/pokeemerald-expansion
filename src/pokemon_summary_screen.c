@@ -1032,7 +1032,7 @@ static const u8 sContestCategoryToOamPaletteNum[CONTEST_CATEGORIES_COUNT] =
 };
 
 //Tera Types Icons
-static const u32 sTeraTypes_Gfx[] = INCBIN_U32("graphics/types_new/tera/tera_types.4bpp");
+static const u32 sTeraTypes_Gfx[] = INCBIN_U32("graphics/types_new/tera/tera_types.4bpp.lz");
 
 static const union AnimCmd sSpriteAnim_TeraTypeNone[] =
 {
