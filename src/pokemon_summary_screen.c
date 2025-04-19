@@ -112,8 +112,10 @@ enum
     SPRITE_ARR_ID_MON,
     SPRITE_ARR_ID_SHADOW,
     SPRITE_ARR_ID_BALL,
-    SPRITE_ARR_ID_ITEM_ICON,
     SPRITE_ARR_ID_STATUS,
+    // all sprites below are considered "page-specific" and will be hidden when switching pages
+    SPRITE_ARR_ID_ITEM_ICON,
+    SPRITE_ARR_ID_TERA_TYPE,
     SPRITE_ARR_ID_TYPE, // 2 for mon types, 5 for move types(4 moves and 1 to learn), used interchangeably, because mon types and move types aren't shown on the same screen
     SPRITE_ARR_ID_MOVE_SELECTOR1 = SPRITE_ARR_ID_TYPE + TYPE_ICON_SPRITE_COUNT, // 10 sprites that make up the selector
     SPRITE_ARR_ID_MOVE_SELECTOR2 = SPRITE_ARR_ID_MOVE_SELECTOR1 + MOVE_SELECTOR_SPRITES_COUNT,
@@ -317,7 +319,6 @@ static void CreateMonMarkingsSprite(struct Pokemon *);
 static void RemoveAndCreateMonMarkingsSprite(struct Pokemon *);
 static void CreateCaughtBallSprite(struct Pokemon *);
 static void CreateItemIconSprite(struct Pokemon *);
-static void DestroyItemIconSprite(struct Pokemon *);
 static void CreateSetStatusSprite(void);
 static void CreateMoveSelectorSprites(u8);
 static void SpriteCB_MoveSelector(struct Sprite *);
@@ -794,6 +795,7 @@ static const u8 sMovesPPLayout[] = _("{PP}{DYNAMIC 0}/{DYNAMIC 1}");
 #define TAG_MON_MARKINGS 30003
 #define TAG_CATEGORY_ICONS 30004
 #define TAG_MON_SHADOW 30005
+#define TAG_TERA_TYPE 30006
 
 static const struct OamData sOamData_CategoryIcons =
 {
@@ -1028,6 +1030,176 @@ static const u8 sContestCategoryToOamPaletteNum[CONTEST_CATEGORIES_COUNT] =
     [CONTEST_CATEGORY_SMART] = 15,
     [CONTEST_CATEGORY_TOUGH] = 13,
 };
+
+//Tera Types Icons
+static const u32 sTeraTypes_Gfx[] = INCBIN_U32("graphics/types_new/tera/tera_types.4bpp");
+
+static const union AnimCmd sSpriteAnim_TeraTypeNone[] =
+{
+    ANIMCMD_FRAME(TYPE_NONE * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeNormal[] =
+{
+    ANIMCMD_FRAME(TYPE_NORMAL * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeFighting[] = 
+{
+    ANIMCMD_FRAME(TYPE_FIGHTING * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeFlying[] =
+{
+    ANIMCMD_FRAME(TYPE_FLYING * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypePoison[] = 
+{
+    ANIMCMD_FRAME(TYPE_POISON * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeGround[] = 
+{
+    ANIMCMD_FRAME(TYPE_GROUND * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeRock[] = 
+{
+    ANIMCMD_FRAME(TYPE_ROCK * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeBug[] = 
+{
+    ANIMCMD_FRAME(TYPE_BUG * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeGhost[] = 
+{
+    ANIMCMD_FRAME(TYPE_GHOST * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeSteel[] = 
+{
+    ANIMCMD_FRAME(TYPE_STEEL * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeMystery[] =
+{
+    ANIMCMD_FRAME(TYPE_MYSTERY * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeFire[] = 
+{
+    ANIMCMD_FRAME(TYPE_FIRE * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeWater[] = 
+{
+    ANIMCMD_FRAME(TYPE_WATER * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeGrass[] = 
+{
+    ANIMCMD_FRAME(TYPE_GRASS * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeElectric[] = 
+{
+    ANIMCMD_FRAME(TYPE_ELECTRIC * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypePsychic[] = 
+{
+    ANIMCMD_FRAME(TYPE_PSYCHIC * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeIce[] = 
+{
+    ANIMCMD_FRAME(TYPE_ICE * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeDragon[] = 
+{
+    ANIMCMD_FRAME(TYPE_DRAGON * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeDark[] = 
+{
+    ANIMCMD_FRAME(TYPE_DARK * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeFairy[] = 
+{
+    ANIMCMD_FRAME(TYPE_FAIRY * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TeraTypeStellar[] = 
+{
+    ANIMCMD_FRAME(TYPE_STELLAR * 4, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+
+static const union AnimCmd *const sSpriteAnimTable_TeraType[NUMBER_OF_MON_TYPES] = 
+{
+    [TYPE_NONE] = sSpriteAnim_TeraTypeNone,
+    [TYPE_NORMAL] = sSpriteAnim_TeraTypeNormal,
+    [TYPE_FIGHTING] = sSpriteAnim_TeraTypeFighting,
+    [TYPE_FLYING] = sSpriteAnim_TeraTypeFlying,
+    [TYPE_POISON] = sSpriteAnim_TeraTypePoison,
+    [TYPE_GROUND] = sSpriteAnim_TeraTypeGround,
+    [TYPE_ROCK] = sSpriteAnim_TeraTypeRock,
+    [TYPE_BUG] = sSpriteAnim_TeraTypeBug,
+    [TYPE_GHOST] = sSpriteAnim_TeraTypeGhost,
+    [TYPE_STEEL] = sSpriteAnim_TeraTypeSteel,
+    [TYPE_MYSTERY] = sSpriteAnim_TeraTypeMystery,
+    [TYPE_FIRE] = sSpriteAnim_TeraTypeFire,
+    [TYPE_WATER] = sSpriteAnim_TeraTypeWater,
+    [TYPE_GRASS] = sSpriteAnim_TeraTypeGrass,
+    [TYPE_ELECTRIC] = sSpriteAnim_TeraTypeElectric,
+    [TYPE_PSYCHIC] = sSpriteAnim_TeraTypePsychic,
+    [TYPE_ICE] = sSpriteAnim_TeraTypeIce,
+    [TYPE_DRAGON] = sSpriteAnim_TeraTypeDragon,
+    [TYPE_DARK] = sSpriteAnim_TeraTypeDark,
+    [TYPE_FAIRY] = sSpriteAnim_TeraTypeFairy,
+    [TYPE_STELLAR] = sSpriteAnim_TeraTypeStellar
+};
+
+static const struct OamData sOamData_TeraType =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(16x16),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(16x16),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const struct CompressedSpriteSheet gSpriteSheet_TeraType =
+{
+    .data = sTeraTypes_Gfx,
+    .size = NUMBER_OF_MON_TYPES * 0x100,
+    .tag = TAG_TERA_TYPE
+};
+
+static const struct SpriteTemplate gSpriteTemplate_TeraType =
+{
+    .tileTag = TAG_TERA_TYPE,
+    .paletteTag = TAG_TERA_TYPE,
+    .oam = &sOamData_TeraType,
+    .anims = sSpriteAnimTable_TeraType,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
 static const struct OamData sOamData_MoveSelector =
 {
     .y = 0,
@@ -1465,8 +1637,6 @@ static bool8 LoadGraphics(void)
         break;
     case 19:
         CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
-        if(P_SUMMARY_SCREEN_ITEM_ICON && sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS)
-            DestroyItemIconSprite(&sMonSummaryScreen->currentMon);
         gMain.state++;
         break;
     case 20:
@@ -1578,12 +1748,13 @@ static bool8 DecompressGraphics(void)
         sMonSummaryScreen->switchCounter++;
         break;
     case 12:
-    #if P_SUMMARY_SCREEN_NEW_TYPE_ICONS
+    #if P_SUMMARY_SCREEN_NEW_TYPE_ICONS == TRUE
         LoadCompressedPalette(gMoveTypes_Pal_New, OBJ_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
     #else
         LoadCompressedPalette(gMoveTypes_Pal, OBJ_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
     #endif
-
+        if (P_SUMMARY_SCREEN_NEW_TERA_TYPE_ICONS == TRUE)
+            LoadCompressedSpriteSheet(&gSpriteSheet_TeraType);
         LoadCompressedSpriteSheet(&gSpriteSheet_CategoryIcons);
         LoadSpritePalette(&gSpritePal_CategoryIcons);
         sMonSummaryScreen->switchCounter = 0;
@@ -2069,8 +2240,6 @@ static void Task_ChangeSummaryMon(u8 taskId)
         break;
     case 2:
         DestroySpriteAndFreeResources(&gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_BALL]]);
-        if (GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_HELD_ITEM))
-            DestroySpriteAndFreeResources(&gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_ITEM_ICON]]);
         break;
     case 3:
         CopyMonToSummaryStruct(&sMonSummaryScreen->currentMon);
@@ -2105,8 +2274,6 @@ static void Task_ChangeSummaryMon(u8 taskId)
         break;
     case 6:
         CreateCaughtBallSprite(&sMonSummaryScreen->currentMon);
-        if (P_SUMMARY_SCREEN_ITEM_ICON && sMonSummaryScreen->currPageIndex != PSS_PAGE_SKILLS)
-            DestroyItemIconSprite(&sMonSummaryScreen->currentMon);
         break;
     case 7:
         if (sMonSummaryScreen->summary.ailment != AILMENT_NONE)
@@ -3556,28 +3723,25 @@ static void Task_PrintInfoPage(u8 taskId)
     s16 *data = gTasks[taskId].data;
     switch (data[0])
     {
-    case 1:       
-        SetSpriteInvisibility(SPRITE_ARR_ID_ITEM_ICON, TRUE);
-        break;
-    case 2:
+    case 1:
         PrintMonOTName();
         break;
-    case 3:
+    case 2:
         PrintMonOTID();
         break;
-    case 4:
+    case 3:
         PrintMonAbilityName();
         break;
-    case 5:
+    case 4:
         PrintMonAbilityDescription();
         break;
-    case 6:
+    case 5:
         BufferMonTrainerMemo();
         break;
-    case 7:
+    case 6:
         PrintMonTrainerMemo();
         break;
-    case 8:
+    case 7:
         DestroyTask(taskId);
         return;
     }
@@ -4138,25 +4302,22 @@ static void Task_PrintBattleMoves(u8 taskId)
     switch (data[0])
     {
     case 1:
-        SetSpriteInvisibility(SPRITE_ARR_ID_ITEM_ICON, TRUE);
-        break;
-    case 2:
         PrintMoveNameAndPP(0);
         break;
-    case 3:
+    case 2:
         PrintMoveNameAndPP(1);
         break;
-    case 4:
+    case 3:
         PrintMoveNameAndPP(2);
         break;
-    case 5:
+    case 4:
         PrintMoveNameAndPP(3);
         break;
-    case 6:
+    case 5:
         if (sMonSummaryScreen->mode == SUMMARY_MODE_SELECT_MOVE)
             PrintNewMoveDetailsOrCancelText();
         break;
-    case 7:
+    case 6:
         if (sMonSummaryScreen->mode == SUMMARY_MODE_SELECT_MOVE)
         {
             if (sMonSummaryScreen->firstMoveIndex == MAX_MON_MOVES)
@@ -4165,14 +4326,14 @@ static void Task_PrintBattleMoves(u8 taskId)
                 data[1] = sMonSummaryScreen->summary.moves[sMonSummaryScreen->firstMoveIndex];
         }
         break;
-    case 8:
+    case 7:
         if (sMonSummaryScreen->mode == SUMMARY_MODE_SELECT_MOVE)
         {
             if (sMonSummaryScreen->newMove != MOVE_NONE || sMonSummaryScreen->firstMoveIndex != MAX_MON_MOVES)
                 PrintMoveDetails(data[1]);
         }
         break;
-    case 9:
+    case 8:
         DestroyTask(taskId);
         return;
     }
@@ -4328,7 +4489,6 @@ static void PrintMoveDetails(u16 move)
 {
     u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_DESCRIPTION);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
-    SetSpriteInvisibility(SPRITE_ARR_ID_ITEM_ICON, TRUE);
     if (move != MOVE_NONE)
     {
         if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES)
@@ -4453,7 +4613,7 @@ static void HidePageSpecificSprites(void)
     // Keeps Pok�mon, caught ball and status sprites visible.
     u8 i;
 
-    for (i = SPRITE_ARR_ID_TYPE; i < ARRAY_COUNT(sMonSummaryScreen->spriteIds); i++)
+    for (i = SPRITE_ARR_ID_ITEM_ICON; i < ARRAY_COUNT(sMonSummaryScreen->spriteIds); i++)
     {
         if (sMonSummaryScreen->spriteIds[i] != SPRITE_NONE)
             SetSpriteInvisibility(i, TRUE);
@@ -4482,10 +4642,17 @@ static void CreateMoveTypeIcons(void)
 {
     u8 i;
 
-    for (i = SPRITE_ARR_ID_TYPE; i < SPRITE_ARR_ID_TYPE + TYPE_ICON_SPRITE_COUNT; i++)
+    for (i = SPRITE_ARR_ID_TERA_TYPE; i < SPRITE_ARR_ID_TYPE + TYPE_ICON_SPRITE_COUNT; i++)
     {
-        if (sMonSummaryScreen->spriteIds[i] == SPRITE_NONE)
+        if(i == SPRITE_ARR_ID_TERA_TYPE)
+        {
+            if (P_SUMMARY_SCREEN_NEW_TERA_TYPE_ICONS == TRUE)
+                sMonSummaryScreen->spriteIds[i] = CreateSprite(&gSpriteTemplate_TeraType, 0, 0, 2);
+        }
+        else
+        {   
             sMonSummaryScreen->spriteIds[i] = CreateSprite(&gSpriteTemplate_MoveTypes, 0, 0, 2);
+        }
 
         SetSpriteInvisibility(i, TRUE);
     }
@@ -4511,6 +4678,10 @@ static void SetMonTypeIcons(void)
     {
         SetTypeSpritePosAndPal(TYPE_MYSTERY, 120, 48, SPRITE_ARR_ID_TYPE);
         SetSpriteInvisibility(SPRITE_ARR_ID_TYPE + 1, TRUE);
+        if (P_SUMMARY_SCREEN_NEW_TERA_TYPE_ICONS == TRUE)
+            SetSpriteInvisibility(SPRITE_ARR_ID_TERA_TYPE, TRUE);
+        else 
+            SetSpriteInvisibility(SPRITE_ARR_ID_TYPE + 2, TRUE);
     }
     else
     {
@@ -4526,7 +4697,11 @@ static void SetMonTypeIcons(void)
         }
         if (P_SHOW_TERA_TYPE >= GEN_9)
         {
-            SetTypeSpritePosAndPal(summary->teraType, 200, 48, SPRITE_ARR_ID_TYPE + 2);
+            if (P_SUMMARY_SCREEN_NEW_TERA_TYPE_ICONS == TRUE)
+                SetTypeSpritePosAndPal(summary->teraType, 200, 48, SPRITE_ARR_ID_TERA_TYPE);
+            else
+                SetTypeSpritePosAndPal(summary->teraType, 200, 48, SPRITE_ARR_ID_TYPE + 2);
+
         }
     }
 }
@@ -4805,20 +4980,6 @@ static void CreateItemIconSprite(struct Pokemon *mon)
         gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_ITEM_ICON]].y = 44;
     }
 }
-
-static void DestroyItemIconSprite(struct Pokemon *mon)
-{
-    u16 item = GetMonData(mon, MON_DATA_HELD_ITEM);
-
-    if (item != ITEM_NONE)
-    {
-        DestroySprite(&gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_ITEM_ICON]]);
-        FreeSpriteTilesByTag(5501);
-        FreeSpritePaletteByTag(5501);
-        sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_ITEM_ICON] = SPRITE_NONE;
-    }
-}
-
 
 static void CreateSetStatusSprite(void)
 {

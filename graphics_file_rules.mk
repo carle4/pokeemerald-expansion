@@ -9,6 +9,7 @@ MASKSGFXDIR := graphics/battle_anims/masks
 BATTRANSGFXDIR := graphics/battle_transitions
 TYPESGFXDIR := graphics/types
 TYPESNEWGFXDIR := graphics/types_new
+TYPESNEWTERAGFXDIR := graphics/types_new/tera
 RAYQUAZAGFXDIR := graphics/rayquaza_scene
 ROULETTEGFXDIR := graphics/roulette
 SLOTMACHINEGFXDIR := graphics/slot_machine
@@ -396,6 +397,9 @@ $(TYPESNEWGFXDIR)/move_types_new.4bpp: $(types:%=$(TYPESNEWGFXDIR)/%.4bpp) $(con
 $(TYPESNEWGFXDIR)/move_types_new.gbapal: $(TYPESNEWGFXDIR)/move_types_1.gbapal \
                                   $(TYPESNEWGFXDIR)/move_types_2.gbapal \
                                   $(TYPESNEWGFXDIR)/move_types_3.gbapal
+	@cat $^ >$@
+
+$(TYPESNEWTERAGFXDIR)/tera_types.4bpp: $(types:%=$(TYPESNEWTERAGFXDIR)/%.4bpp)
 	@cat $^ >$@
 
 graphics/bag/menu.4bpp: %.4bpp: %.png
