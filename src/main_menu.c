@@ -1345,7 +1345,6 @@ void CB2_NewGameBirchSpeech_FromNewMainMenu(void) // Combination of the Above fu
     LZ77UnCompVram(sBirchSpeechShadowGfx, (u8 *)VRAM);
     LZ77UnCompVram(sBirchSpeechBgMap, (u8 *)(BG_SCREEN_ADDR(7)));
     LoadPalette(sBirchSpeechBgPals, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
-    LoadPalette(sBirchSpeechPlatformBlackPal, BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
     ResetTasks();
     taskId = CreateTask(Task_NewGameBirchSpeech_WaitToShowBirch, 0);
     gTasks[taskId].tBG1HOFS = 0;
@@ -1681,9 +1680,7 @@ static void Task_NewGameBirchSpeech_StartNamingScreen(u8 taskId)
     if (!gPaletteFade.active)
     {
         FreeAllWindowBuffers();
-        FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
-        NewGameBirchSpeech_SetDefaultPlayerName(Random() % NUM_PRESET_NAMES);
-        DestroyTask(taskId);
+        FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);        DestroyTask(taskId);
         DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_NewGameBirchSpeech_ReturnFromNamingScreen);
     }
 }
