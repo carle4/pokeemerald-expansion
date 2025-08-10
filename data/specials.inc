@@ -572,3 +572,4 @@ gSpecials::
 	def_special EnterCode
 	def_special GetCodeFeedback
 	def_special CreateWonderTradePokemon
+	def_special ChooseRandomEggSpecies
