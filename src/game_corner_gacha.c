@@ -3017,6 +3017,7 @@ void ShowFinalMessage(void)
 
 static u8 GetSpeciesGachaLevel(void)
 {
+    u8 i;
     u32 level, levelCap, minLevel, addedLevelRange;
     static const u32 sLevelGachaFlagMap[][3] =
     {
