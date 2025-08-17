@@ -573,3 +573,4 @@ gSpecials::
 	def_special GetCodeFeedback
 	def_special CreateWonderTradePokemon
 	def_special ChooseRandomEggSpecies
+    def_special StartMining
