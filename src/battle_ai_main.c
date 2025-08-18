@@ -912,7 +912,7 @@ void BattleAI_DoAIProcessing_PredictedSwitchin(struct AiThinkingStruct *aiThink,
     }
 
     // Get battler and move data for predicted switchin
-    PokemonToBattleMon(&party[aiData->mostSuitableMonId[battlerDef]], &switchinCandidate, FALSE);
+    PokemonToBattleMon(&party[aiData->mostSuitableMonId[battlerDef]], &switchinCandidate);
     gBattleMons[battlerDef] = switchinCandidate;
     SetBattlerAiData(battlerDef, aiData);
     CalcBattlerAiMovesData(aiData, battlerAtk, battlerDef, AI_GetWeather());

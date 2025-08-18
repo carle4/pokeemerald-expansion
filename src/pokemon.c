@@ -3679,7 +3679,7 @@ void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex)
     mon->ppBonuses &= gPPUpClearMask[moveIndex];
 }
 
-void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst, bool8 resetStats)
+void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
 {
     s32 i;
     u8 nickname[POKEMON_NAME_BUFFER_SIZE];
@@ -3722,23 +3722,20 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst, bool8 re
     StringCopy_Nickname(dst->nickname, nickname);
     GetMonData(src, MON_DATA_OT_NAME, dst->otName);
 
-    if (resetStats)
-    {
-        for (i = 0; i < NUM_BATTLE_STATS; i++)
-            dst->statStages[i] = DEFAULT_STAT_STAGE;
+    for (i = 0; i < NUM_BATTLE_STATS; i++)
+        dst->statStages[i] = DEFAULT_STAT_STAGE;
 
-        dst->status2 = 0;
-    }
+    dst->status2 = 0;
 }
 
-void CopyPartyMonToBattleData(u32 battlerId, u32 partyIndex, bool8 resetStats)
+void CopyPartyMonToBattleData(u32 battler, u32 partyIndex)
 {
     u32 side = GetBattlerSide(battler);
     struct Pokemon *party = GetSideParty(side);
-    PokemonToBattleMon(&party[partyIndex], &gBattleMons[battlerId], resetStats);
-    gBattleStruct->hpOnSwitchout[side] = gBattleMons[battlerId].hp;
-    UpdateSentPokesToOpponentValue(battlerId);
-    ClearTemporarySpeciesSpriteData(battlerId, FALSE, FALSE);
+    PokemonToBattleMon(&party[partyIndex], &gBattleMons[battler]);
+    gBattleStruct->hpOnSwitchout[side] = gBattleMons[battler].hp;
+    UpdateSentPokesToOpponentValue(battler);
+    ClearTemporarySpeciesSpriteData(battler, FALSE, FALSE);
 }
 
 bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex)
